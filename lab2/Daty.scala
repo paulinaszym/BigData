@@ -91,17 +91,17 @@ val tempF = dataFrame.withColumn("Year", year(col("timestamp"))).withColumn("Mon
 //display(tempF)      
 
 //unix_timestamp()
-//val a1 = dataFrame.select($"timestamp",unix_timestamp($"timestamp","yyyy-MM-dd'T'HH:mm:ss").as("unix_timestamp")).show()
+val a1 = dataFrame.select($"timestamp",unix_timestamp($"timestamp","yyyy-MM-dd'T'HH:mm:ss").as("unix_timestamp")).show()
 
 //date_format()
-//val a2 = dataFrame.select($"timestamp",date_format($"timestamp","yyyy-MM-dd").as("date_format")).show()
+val a2 = dataFrame.select($"timestamp",date_format($"timestamp","yyyy-MM-dd").as("date_format")).show()
 
 //to_unix_timestamp()
-//val a3 = dataFrame.select($"timestamp",to_unix_timestamp($"timestamp","yyyy-MM-dd").as("to_unix_timestamp")).show()
+val a3 = dataFrame.select($"timestamp",to_unix_timestamp($"timestamp","yyyy-MM-dd").as("to_unix_timestamp")).show()
 // error: not found: value to_unix_timestamp
 
 //from_unixtime()
-//val a4 = dataFrame.select($"unix",from_unixtime($"unix","yyyy-MM-dd").as("from_unixtime")).show()
+val a4 = dataFrame.select($"unix",from_unixtime($"unix","yyyy-MM-dd").as("from_unixtime")).show()
 
 //to_date()
 val a5 = dataFrame.select($"current_timestamp",to_date($"current_timestamp","yyyy-MM-dd").as("to_date")).show()
