@@ -166,8 +166,8 @@ val endTimeMillis = System.currentTimeMillis()
 val namesDf1 = namesDf6.withColumn("time", lit((endTimeMillis - startTimeMillis)/1e9d))
 
 //Zad3
-//namesDf6.select($"*").explain()
-//namesDf6.select($"*").groupBy("votes_10").explain()
+namesDf6.select($"*").explain()
+namesDf6.select($"*").groupBy("votes_10").explain()
 display(namesDf4)
 
 // COMMAND ----------
