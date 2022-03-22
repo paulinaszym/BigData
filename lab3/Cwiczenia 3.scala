@@ -93,21 +93,7 @@ import org.apache.spark.sql.functions._
 val startTimeMillis = System.currentTimeMillis()
 
 //Dodaj kolumnę która wylicza ile lat upłynęło od publikacji filmu
-val namesDf22=namesDf.select(col("*"),
-    when(to_date(col("date_published"),"yyyy-MM-dd").isNotNull,
-           to_date(col("date_published"),"yyyy-MM-dd"))
-    .when(to_date(col("date_published"),"yyyy MM dd").isNotNull,
-           to_date(col("date_published"),"yyyy MM dd"))
-    .when(to_date(col("date_published"),"MM/dd/yyyy").isNotNull,
-           to_date(col("date_published"),"MM/dd/yyyy"))
-    .when(to_date(col("date_published"),"yyyy MMMM dd").isNotNull,
-           to_date(col("date_published"),"yyyy MMMM dd"))
-    .when(to_date(col("date_published"),"yyyy.MMMM.dd").isNotNull,
-             to_date(col("date_published"),"yyyy.MMMM.dd"))                                   
-    .when(to_date(col("date_published"),"dd.MMMM.yyyy").isNotNull,
-           to_date(col("date_published"),"dd.MMMM.yyyy"))
-    .otherwise(null).as("d"))
-val namesDf2=namesDf22.withColumn("time",round(months_between(current_date(),col("d"),true).divide(12)))
+val namesDf2=namesDf.withColumn("time",year(current_date())-$"year")
 
 //Dodaj kolumnę która pokaże budżet filmu jako wartość numeryczną, (trzeba usunac znaki walut)
 val namesDf3 = namesDf.withColumn("budget2", regexp_extract($"budget", "[0-9]+", 0).cast("int"))
