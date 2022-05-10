@@ -101,3 +101,71 @@ df.rdd.getNumPartitions
 //     2 partycji - 3s
 //     1 partycji - 4s
 
+// COMMAND ----------
+
+//Zadanie 2
+def read_file(filePath:String): DataFrame = if(Files.exists(Paths.get(filePath))) {
+    return spark.read.format("csv")
+              .option("header","true")
+              .option("inferSchema","true")
+              .load(filePath)
+  } else{
+  println("No file found")
+    return spark.emptyDataFrame
+  }
+
+ def to_feet(col_name: String): DataFrame ={
+    if(df.columns.contains(col_name)){
+     if (df.schema(col_name).dataType.typeName == "float"){
+       this.df.withColumn(col_name, col(col_name.cast("Float"))/30.48)
+     }
+   else{
+     this.df.withColumn(col_name, col(col_name)/30.48)
+   }    
+  }
+    else{
+      println("Column not in dataframe")
+      return spark.emptyDataFrame
+    }
+  }
+
+def clean_dataframe(col_names: String, df: String ) DataFrame ={
+  for( i <- col_names){
+   if(df.columns.contains(i))
+      spark.sql(s"DELETE FROM $db.$i")
+    else{
+      println("Column not in dataframe")
+      return spark.emptyDataFrame
+    } 
+  } 
+  }
+  
+  def fill_na(col_names: String, df: String ) DataFrame ={
+  for( i <- col_names){
+   if(!df.columns.contains(i)){
+      println("Column not in dataframe")
+      return spark.emptyDataFrame
+    } 
+    df.na.fill("")
+  } 
+  }
+
+ def most_frequent_value(col_name: String): DataFrame ={
+    if(df.columns.contains(col_name)){
+     return df.select(col(col_name)).withColumn("x", split(col(col_name), " ").getItem(0)).groupBy("x").count().orderBy(desc("count")) 
+  }
+    else{
+      println("Column not in dataframe")
+      return spark.emptyDataFrame
+    }
+  }
+
+ def drop_col(col_name: String): DataFrame ={
+    if(df.columns.contains(col_name)){
+     return namesDf.drop(col(col_name))
+  }
+    else{
+      println("Column not in dataframe")
+      return spark.emptyDataFrame
+    }
+  }
